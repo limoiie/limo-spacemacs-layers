@@ -74,7 +74,9 @@
 
 (defun limo-config-coding/post-init-pyvenv ()
   "You need to add ~python~ layer for enabling this."
-  (setenv "WORKON_HOME" "~/.conda/envs")
+
+  (when limo-config-coding-pyvenv-workon-home
+    (setenv "WORKON_HOME" limo-config-coding-pyvenv-workon-home))
 
   (use-package pyvenv
     :if limo-config-coding-pyvenv-enabled
