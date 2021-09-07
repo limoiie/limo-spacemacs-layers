@@ -58,5 +58,6 @@
   (use-package bookmark+
     :defer t
     :custom
-    (bmkp-last-as-first-bookmark-file last-as-first-bookmark-file))
+    (bmkp-last-as-first-bookmark-file last-as-first-bookmark-file)
+    :hook (prog-mode . (lambda () (require 'bookmark+))))
   )
