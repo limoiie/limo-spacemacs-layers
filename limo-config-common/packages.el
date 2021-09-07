@@ -80,6 +80,15 @@ Each entry is either:
     :defer t
     :custom
     (compilation-window-height 15)
+    :config
+    ;; enable truncate lines
+    ;; (spacemacs/toggle-truncate-lines-on)
+    :hook
+    ;; enable visual line navigation for textual modes
+    (text-mode . spacemacs/toggle-visual-line-navigation-on)
+    ;; enable line ruler
+    (text-mode . spacemacs/toggle-fill-column-indicator)
+    (prog-mode . spacemacs/toggle-fill-column-indicator)
     ))
 
 (defun limo-config-common/post-init-company ()
