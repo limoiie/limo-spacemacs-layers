@@ -41,10 +41,10 @@
 ;;; Code:
 
 (defconst limo-config-common-packages
-  '(compile
+  `(compile
     company
-    (clipetty :toggle limo-config-common-clipetty-enable)
-    (eterm-256color :toggle limo-config-common-eterm-256color-enable)
+    (clipetty :toggle ,limo-config-common-clipetty-enable)
+    (eterm-256color :toggle ,limo-config-common-eterm-256color-enable)
     helm
     )
   "The list of Lisp packages required by the limo-config-common layer.
