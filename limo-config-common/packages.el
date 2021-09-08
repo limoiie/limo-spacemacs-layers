@@ -114,7 +114,7 @@ Each entry is either:
     :if limo-config-common-helm-float
     :defer t
     :custom
-    (helm-display-function 'helm-display-buffer-in-own-frame)
+    (helm-display-function 'spacemacs//limo-config-common-helm-display-frame-center)
     (helm-display-buffer-reuse-frame t)
     (helm-use-undecorated-frame-option t)
     ))
