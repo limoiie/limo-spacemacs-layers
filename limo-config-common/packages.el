@@ -46,6 +46,7 @@
     clipetty
     eterm-256color
     helm
+    git-gutter+
     )
   "The list of Lisp packages required by the limo-config-common layer.
 
@@ -117,4 +118,11 @@ Each entry is either:
     (helm-display-function 'spacemacs//limo-config-common-helm-display-frame-center)
     (helm-display-buffer-reuse-frame t)
     (helm-use-undecorated-frame-option t)
+    ))
+
+(defun limo-config-common/post-init-git-gutter+ ()
+  (use-package git-gutter+
+    :defer t
+    :config
+    (set-face-background 'git-gutter+-modified "brightblack")
     ))
