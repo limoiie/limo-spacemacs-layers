@@ -83,6 +83,8 @@ Each entry is either:
     (compilation-window-height 15)
     (shell-pop-window-size 20)
     :hook
+    ;; transparent background by overwritting theme's background color
+    (window-setup . spacemacs//limo-config-common-config-background)
     ;; enable visual line navigation for textual modes
     (text-mode . spacemacs/toggle-visual-line-navigation-on)
     ;; enable line ruler
