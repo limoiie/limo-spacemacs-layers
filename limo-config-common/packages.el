@@ -81,9 +81,7 @@ Each entry is either:
     :defer t
     :custom
     (compilation-window-height 15)
-    :config
-    ;; enable truncate lines
-    ;; (spacemacs/toggle-truncate-lines-on)
+    (shell-pop-window-size 20)
     :hook
     ;; enable visual line navigation for textual modes
     (text-mode . spacemacs/toggle-visual-line-navigation-on)
