@@ -35,6 +35,9 @@ You must specify :fpath and :maxlevel in capture template entry"
   (let* (;; get args from org-capture-plist
          (fpath (plist-get org-capture-plist :fpath))
          (maxlevel (plist-get org-capture-plist :maxlevel))
+         (fpath (if (stringp fpath) fpath
+                  (if (listp fpath) (apply fpath)
+                    (apply `(,fpath)))))
          (org-refile-targets `((,fpath :maxlevel . ,maxlevel)))
          (org-refile-use-outline-path 'file)
          (org-outline-path-complete-in-steps nil)
@@ -49,7 +52,7 @@ You must specify :fpath and :maxlevel in capture template entry"
       (widen)
       (goto-char selected-point))))
 
-(defun spacemacs//limo-config-writing-find-org-entry-locally ()
+(defun spacemacs//limo-config-writing-find-org-entry-in-current-buffer ()
   "Ask user for a concrete entry path in the current org buffer.
 You must specify :maxlevel in capture template entry"
   (let* ((maxlevel (plist-get org-capture-plist :maxlevel))
@@ -76,3 +79,11 @@ You must specify :maxlevel in capture template entry"
 (defun spacemacs//limo-config-writing-org/ (relpath)
   "Resolve RELPATH with the configured org dir."
   (concat (file-name-as-directory limo-config-writing-org-dir) relpath))
+
+(defun spacemacs//limo-config-writing-get-projectile-todo-fpath ()
+  "Return fullpath to the project todo file."
+  (let* ((project-root (projectile-project-root))
+         (project-root (file-name-as-directory project-root))
+         (project-todo-filename "TODOs.org"))
+    (concat project-root project-todo-filename)
+    ))
