@@ -74,6 +74,7 @@
     (org-todo-keyword-faces
      '(("TODO" :foreground "#7c7c75" :underline t)
        ("INPROGRESS" :foreground "#0098dd" :underline t)
+       ("PAUSED" :foreground "#ff6480" :underline t)
        ("BUG" :foreground "#ff6480" :underline t)
        ("PERFORMACE" :foreground "#9f7efe" :underline t)
        ("CANCELED" :foreground "#ff6480" :strike-through t)))
@@ -82,6 +83,7 @@
                      ("@project" . ?p)
                      ("@paper" . ?a)
                      ("@doc" . ?d)
+                     ("@note" . ?n)
                      (:endgroup . nil)
                      ("@ignore" . ?i)))
     ;; customize stuck projects
@@ -106,7 +108,7 @@
 
        ("tp" "Project ToDo" entry
         (function spacemacs//limo-config-writing-find-org-entry)
-        "* TODO %?\n  %u\n  %i\n  %a"
+        "* TODO %i\n  %u\n  %?\n  %a"
         ;; extra args to function
         :fpath spacemacs//limo-config-writing-get-projectile-todo-fpath
         :maxlevel 9)
