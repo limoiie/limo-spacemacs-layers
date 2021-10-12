@@ -149,11 +149,10 @@
     :defer t
     :custom
     (org-agenda-window-setup 'current-window)
-    ;; enable diary todo
     (org-agenda-include-diary t)
-    ;; add all the org-files into org-agenda-files for searching use
-    (org-agenda-files (directory-files-recursively "~/Projects/notes/" "\\.org$"))
-    ))
+    (org-agenda-files (append
+                       (directory-files-recursively "~/Projects/notes/" "\\.org$")
+                       (org-projectile-todo-files)))))
 
 (defun limo-config-writing/post-init-org-refile ()
   (use-package org-refile
