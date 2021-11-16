@@ -80,8 +80,7 @@ Breakpoints^^     Execution^^^^            Eval^^                   View^^
         ("pe" gud-pp)
         )
 
-      ;; TODO: hook on Mode debugger, Buffer *gud-main*
-      (spacemacs/set-leader-keys "md." 'spacemacs/gud-transient-state/body)
+      (spacemacs/set-leader-keys-for-major-mode 'prog-mode "d." 'spacemacs/gud-transient-state/body)
       (defadvice gud-display-line (after gud-display-line-centered activate)
         "Center the line in the window"
         (when (and gud-overlay-arrow-position gdb-source-window)
