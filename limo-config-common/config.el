@@ -7,3 +7,5 @@
 (defconst limo-config-common-helm-float t
   "Float helm command panel.")
 
+(defconst limo-config-common-transparent-term t
+  "Set transparent background for terminal emacs.")

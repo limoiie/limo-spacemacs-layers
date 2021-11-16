@@ -46,6 +46,7 @@
     clipetty
     eterm-256color
     helm
+    git-gutter+
     )
   "The list of Lisp packages required by the limo-config-common layer.
 
@@ -80,10 +81,10 @@ Each entry is either:
     :defer t
     :custom
     (compilation-window-height 15)
-    :config
-    ;; enable truncate lines
-    ;; (spacemacs/toggle-truncate-lines-on)
+    (shell-pop-window-size 20)
     :hook
+    ;; transparent background by overwritting theme's background color
+    (window-setup . spacemacs//limo-config-common-config-background)
     ;; enable visual line navigation for textual modes
     (text-mode . spacemacs/toggle-visual-line-navigation-on)
     ;; enable line ruler
@@ -117,4 +118,11 @@ Each entry is either:
     (helm-display-function 'spacemacs//limo-config-common-helm-display-frame-center)
     (helm-display-buffer-reuse-frame t)
     (helm-use-undecorated-frame-option t)
+    ))
+
+(defun limo-config-common/post-init-git-gutter+ ()
+  (use-package git-gutter+
+    :defer t
+    :config
+    (set-face-background 'git-gutter+-modified "brightblack")
     ))

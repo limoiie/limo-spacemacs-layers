@@ -74,6 +74,7 @@
     (org-todo-keyword-faces
      '(("TODO" :foreground "#7c7c75" :underline t)
        ("INPROGRESS" :foreground "#0098dd" :underline t)
+       ("PAUSED" :foreground "#ff6480" :underline t)
        ("BUG" :foreground "#ff6480" :underline t)
        ("PERFORMACE" :foreground "#9f7efe" :underline t)
        ("CANCELED" :foreground "#ff6480" :strike-through t)))
@@ -82,53 +83,65 @@
                      ("@project" . ?p)
                      ("@paper" . ?a)
                      ("@doc" . ?d)
+                     ("@note" . ?n)
                      (:endgroup . nil)
                      ("@ignore" . ?i)))
     ;; customize stuck projects
     ;; see: ~/Projects/notes/emacs/org.org#Variables#org-stuck-projects
     (org-stuck-projects
-          ;; 1. project-tags/TODO-keywords/properties for stuck projects
-          ;; 2. a list of TODO-keywords for non stuck projects
-          ;; 3. a list of tags for non stuck projects
-          ;; 4. a regex expression for non stuck projects
-          '("+@project|+@paper/-DONE-FIXED-CANCELED"
-            ("TODO" "WORKING" "REPORT" "BUG" "KNOWNCAUSE" "PERFORMACE")
-            ("@doc")
-            "\\<@ignore\\>"))
+     ;; 1. project-tags/TODO-keywords/properties for stuck projects
+     ;; 2. a list of TODO-keywords for non stuck projects
+     ;; 3. a list of tags for non stuck projects
+     ;; 4. a regex expression for non stuck projects
+     '("+@project|+@paper/-DONE-FIXED-CANCELED"
+       ("TODO" "WORKING" "REPORT" "BUG" "KNOWNCAUSE" "PERFORMACE")
+       ("@doc")
+       "\\<@ignore\\>"))
     ;; customize capture
     (org-capture-templates
-          `(("t" "Todo" entry
-             (file+headline
-              ,(spacemacs//limo-config-writing-org/ "capture/task.org") "Tasks")
-             "* TODO %?\n  %u\n  %i\n  %a")
+     `(("t" "ToDo")
 
-            ("j" "Journal" entry
-             (file+datetree
-              ,(spacemacs//limo-config-writing-org/ "capture/journal.org"))
-             "* %?\n  Entered on %u\n  %i\n  %a")
+       ("tt" "Quick ToDo" entry
+        (file+headline
+         ,(spacemacs//limo-config-writing-org/ "capture/task.org") "Tasks")
+        "* TODO %?\n  %u\n  %i\n  %a")
 
-            ("n" "Notes")
+       ("tp" "Project ToDo" entry
+        (function spacemacs//limo-config-writing-find-org-entry)
+        "* TODO %i\n  %u\n  %?\n  %a"
+        ;; extra args to function
+        :fpath spacemacs//limo-config-writing-get-projectile-todo-fpath
+        :maxlevel 9)
 
-            ("nq" "Quick Note" entry
-             (function spacemacs//limo-config-writing-find-org-entry)
-             "* %?\n  Entered on %u\n  %i\n  %a"
-             ;; extra args to function
-             :fpath ,(spacemacs//limo-config-writing-org/ "capture/note.org")
-             :maxlevel 5)
+       ("j" "Journal" entry
+        (file+datetree
+         ,(spacemacs//limo-config-writing-org/ "capture/journal.org"))
+        "* %?\n  Entered on %u\n  %i\n  %a")
 
-            ("nn" "New Misc Note" entry
-             (function spacemacs//limo-config-writing-new-note-under)
-             "* %?\n  Entered on %u\n  %i\n  %a"
-             ;; extra args to function
-             :dir ,(spacemacs//limo-config-writing-org/ "misc/"))
+       ("n" "Notes")
 
-            ("e" "English Grammar" item
-             (file+function ,(spacemacs//limo-config-writing-org/ "capture/english.org")
-                            spacemacs//limo-config-writing-find-org-entry-locally)
-             "- %?\n"
-             ;; extra args to function
-             :maxlevel 9)))
-    ))
+       ("nn" "Quick Note" entry
+        (function spacemacs//limo-config-writing-find-org-entry)
+        "* %?\n  Entered on %u\n  %i\n  %a"
+        ;; extra args to function
+        :fpath ,(spacemacs//limo-config-writing-org/ "capture/note.org")
+        :maxlevel 5)
+
+       ("nm" "Misc Note" entry
+        (function spacemacs//limo-config-writing-new-note-under)
+        "* %?\n  Entered on %u\n  %i\n  %a"
+        ;; extra args to function
+        :dir ,(spacemacs//limo-config-writing-org/ "misc/"))
+
+       ("e" "English Grammar" item
+        (file+function
+         ,(spacemacs//limo-config-writing-org/ "capture/english.org")
+         spacemacs//limo-config-writing-find-org-entry-in-current-buffer)
+        "- %?\n"
+        ;; extra args to function
+        :maxlevel 9))
+     ))
+  )
 
 (defun limo-config-writing/post-init-org-agenda ()
   (use-package org-agenda
@@ -136,11 +149,10 @@
     :defer t
     :custom
     (org-agenda-window-setup 'current-window)
-    ;; enable diary todo
     (org-agenda-include-diary t)
-    ;; add all the org-files into org-agenda-files for searching use
-    (org-agenda-files (directory-files-recursively "~/Projects/notes/" "\\.org$"))
-    ))
+    (org-agenda-files (append
+                       (directory-files-recursively "~/Projects/notes/" "\\.org$")
+                       (org-projectile-todo-files)))))
 
 (defun limo-config-writing/post-init-org-refile ()
   (use-package org-refile
@@ -184,4 +196,3 @@
     (TeX-source-correlate-start-server t)
     )
   )
-
