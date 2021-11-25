@@ -75,7 +75,6 @@ parent frame."
       (helm-display-buffer-popup-frame buffer default-frame-alist))
     (helm-log-run-hook 'helm-window-configuration-hook)))
 
-
 (defun spacemacs//limo-config-common-config-background ()
   "Set transparent background by overwritting theme's background color"
   (when limo-config-common-transparent-term
