@@ -57,7 +57,9 @@
 (defun bookmark-plus/init-bookmark+ ()
   (use-package bookmark+
     :defer t
-    :custom
-    (bmkp-last-as-first-bookmark-file last-as-first-bookmark-file)
-    :hook (prog-mode . (lambda () (require 'bookmark+))))
-  )
+    :bind (("C-x r l" . #'bookmark+-bmenu-list))))
+
+(defun bookmark+-bmenu-list ()
+  (interactive)
+  (require 'bookmark+)
+  (call-interactively #'bookmark-bmenu-list))
