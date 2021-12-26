@@ -46,6 +46,7 @@
     (org :location built-in)
     (org-agenda :location built-in)
     org-refile
+    org-projectile
     helm-org-rifle))
 
 (defun limo-config-writing/post-init-ob ()
@@ -147,12 +148,18 @@
   (use-package org-agenda
     :if (member 'org limo-config-writing-enabled)
     :defer t
+    :after org-projectile
     :custom
     (org-agenda-window-setup 'current-window)
     (org-agenda-include-diary t)
-    (org-agenda-files (append
-                       (directory-files-recursively "~/Projects/notes/" "\\.org$")
-                       (org-projectile-todo-files)))))
+    (org-agenda-files
+     (append (directory-files-recursively "~/Projects/notes/" "\\.org$")
+             (org-projectile-todo-files)))))
+
+(defun limo-config-writing/post-init-org-projectile ()
+  (use-package org-projectile
+    :if(member 'org limo-config-writing-enabled)
+    :defer t))
 
 (defun limo-config-writing/post-init-org-refile ()
   (use-package org-refile
