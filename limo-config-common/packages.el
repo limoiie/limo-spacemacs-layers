@@ -81,6 +81,7 @@ Each entry is either:
     :defer t
     :custom
     (compilation-window-height 15)
+    (global-hl-line-mode nil)
     (shell-pop-window-size 20)
     :hook
     ;; transparent background by overwritting theme's background color
