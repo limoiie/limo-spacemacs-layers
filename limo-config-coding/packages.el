@@ -85,6 +85,7 @@
     (lsp-ui-doc-position 'at-point)
     (lsp-ui-sideline-show-hover t)
     (lsp-ui-sideline-show-symbol t)
+    (lsp-ui-sideline-delay 2.)
     :config
     ;; let top-level `K' call `lsp-ui-doc-glance' -- top-level `K' is bound to
     ;; `evil-smart-doc-help' which will try to call the command bound under Major Mode `h h',

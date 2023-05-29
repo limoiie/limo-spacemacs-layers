@@ -29,12 +29,13 @@
 
 ;;; Functions:
 
-(defun spacemacs//limo-config-common-helm-display-frame-center (buffer &optional resume)
+(defun spacemacs//limo-config-common-helm-display-float (buffer &optional resume)
   "Display helm in its own frame and centering in the parent frame.
 Reference from <https://www.reddit.com/r/emacs/comments/jj269n/display_helm_frames_in_the_center_of_emacs/?utm_source=share&utm_medium=web2x&context=3> by u/kaiwk."
   "Display `helm-buffer' in a separate frame which centered in
 parent frame."
-  (if (not (display-graphic-p))
+  (if (or (not (display-graphic-p))
+          (not limo-config-common-helm-float))
       ;; Fallback to default when frames are not usable.
       (helm-default-display-buffer buffer)
     (setq helm--buffer-in-new-frame-p t)
@@ -69,11 +70,11 @@ parent frame."
                  (fullscreen . nil)
                  (visible . ,(null helm-display-buffer-reuse-frame))
                  ;; (internal-border-width . ,(if IS-MAC 1 0))
-                )))
+                 )))
            display-buffer-alist)
       (set-face-background 'internal-border (face-foreground 'default))
       (helm-display-buffer-popup-frame buffer default-frame-alist))
-    (helm-log-run-hook 'helm-window-configuration-hook)))
+    (helm-log-run-hook buffer 'helm-window-configuration-hook)))
 
 (defun spacemacs//limo-config-common-config-background ()
   "Set transparent background by overwritting theme's background color"

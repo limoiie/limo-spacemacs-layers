@@ -46,8 +46,8 @@
     clipetty
     eterm-256color
     helm
-    git-gutter+
-    )
+    hl-todo
+    git-gutter+)
   "The list of Lisp packages required by the limo-config-common layer.
 
 Each entry is either:
@@ -81,8 +81,14 @@ Each entry is either:
     :defer t
     :custom
     (compilation-window-height 15)
+    ;; show fringe on the right side
+    (fringe-mode '(0) nil (fringe))
+    ;; do not highligh the current line
     (global-hl-line-mode nil)
+    ;; widden line number fringe
+    (linum-format " %6d ")
     (shell-pop-window-size 20)
+    (window-divider-mode nil)
     :hook
     ;; transparent background by overwritting theme's background color
     (window-setup . spacemacs//limo-config-common-config-background)
@@ -92,6 +98,23 @@ Each entry is either:
     (text-mode . spacemacs/toggle-fill-column-indicator)
     (prog-mode . spacemacs/toggle-fill-column-indicator)
     ))
+
+(defun limo-config-common/post-init-hl-todo ()
+  (use-package hl-todo
+    :defer t
+    :custom
+    (hl-todo-keyword-faces
+     '(("TODO"     . "#FFD700")  ; gold
+       ("FIXME"    . "#FF4500")  ; orange red
+       ("HACK"     . "#8B008B")  ; dark magenta
+       ("NOTE"     . "#C0C0C0")  ; light gray
+       ("IMPROVE"  . "#00FF7F")  ; spring green
+       ("OPTIMIZE" . "#00FF7F")  ; spring green
+       ("REFACTOR" . "#9966FF")  ; purple
+       ("DEBUG"    . "#1E90FF")  ; dodger blue
+       ("GOTCHA"   . "#FF69B4")  ; hot pink
+       ("STUB"     . "#8F8080")  ; gray
+       ))))
 
 (defun limo-config-common/post-init-company ()
   (use-package company
@@ -116,7 +139,7 @@ Each entry is either:
     :if limo-config-common-helm-float
     :defer t
     :custom
-    (helm-display-function 'spacemacs//limo-config-common-helm-display-frame-center)
+    (helm-display-function 'spacemacs//limo-config-common-helm-display-float)
     (helm-display-buffer-reuse-frame t)
     (helm-use-undecorated-frame-option t)
     ))
