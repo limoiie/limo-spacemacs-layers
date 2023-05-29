@@ -43,6 +43,7 @@
 (defconst limo-config-coding-packages
   '(dap-mode
     lsp-mode
+    lsp-ui
     pyvenv)
   )
 
@@ -60,17 +61,38 @@
   "You need to add ~lsp~ layer for enabling this."
   (use-package lsp-mode
     :defer t
-    :config (lsp-register-client
-             (make-lsp-client
-              :new-connection (lsp-stdio-connection "ocamllsp")
-              :major-modes '(caml-mode tuareg-mode)
-              :server-id 'ocamllsp))
+    :custom
+    (lsp-headerline-breadcrumb-icons-enable nil)
+    :config
+    (lsp-register-client
+     (make-lsp-client
+      :new-connection (lsp-stdio-connection "ocamllsp")
+      :major-modes '(caml-mode tuareg-mode)
+      :server-id 'ocamllsp))
     :hook ((python-mode . lsp)
            (c++-mode . lsp)
            (c-mode . lsp)
            (tuareg-mode . lsp))
     :commands lsp)
   )
+
+(defun limo-config-coding/post-init-lsp-ui ()
+  "You need to add ~lsp~ layer for enabling this."
+  (use-package lsp-ui
+    :defer t
+    :after lsp-mode
+    :custom
+    (lsp-ui-doc-position 'at-point)
+    (lsp-ui-sideline-show-hover t)
+    (lsp-ui-sideline-show-symbol t)
+    :config
+    ;; let top-level `K' call `lsp-ui-doc-glance' -- top-level `K' is bound to
+    ;; `evil-smart-doc-help' which will try to call the command bound under Major Mode `h h',
+    ;; in lsp-mode it is `lsp-describe-thing-at-point'.
+    (define-key lsp-mode-map [remap lsp-describe-thing-at-point] #'lsp-ui-doc-glance)
+    ;; prefer `lsp-ui-peek' rather than `xref-find'
+    (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
+    (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)))
 
 (defun limo-config-coding/post-init-pyvenv ()
   "You need to add ~python~ layer for enabling this."
@@ -86,5 +108,4 @@
           (lambda ()
             (when limo-config-coding-pyvenv-default-env
               (pyvenv-activate limo-config-coding-pyvenv-default-env))))
-    :hook ((python-mode . fn-activate)))
-  )
+    :hook ((python-mode . fn-activate))))
