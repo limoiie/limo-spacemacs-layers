@@ -57,13 +57,15 @@
     (global-set-key (kbd "C-M-<left>") 'evil-jump-backward)
     (global-set-key (kbd "C-M-<right>") 'evil-jump-forward)
 
-    (message "limo-config-keymap: %s" (spacemacs//limo-config-keymap-env))
+    (with-eval-after-load 'evil-maps
+      (define-key evil-normal-state-map (kbd "M-.") 'evil-goto-definition))
 
+    ;; (message "limo-config-keymap: %s" (spacemacs//limo-config-keymap-env))
     (pcase (spacemacs//limo-config-keymap-env)
       ;; gui
       ('(gui mac) (setq mac-option-key-is-meta nil
-                        mac-command-key-is-meta t
-                        mac-command-modifier 'none
+                        mac-command-key-is-meta nil
+                        mac-command-modifier 'super
                         mac-option-modifier 'meta))
       ('(gui win) ())
       ('(gui linux) ())
