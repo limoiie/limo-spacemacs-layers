@@ -68,7 +68,7 @@ a user customized environment variable."
 (defun spacemacs//limo-config-keymap-default-term-name ()
   "Get default term name by system."
   (cl-case limo-config-keymap-style
-    ('mac "iterm2")
-    ('linux "terminal")
-    ('win "windows-terminal")
+    (mac "iterm2")
+    (linux "terminal")
+    (win "windows-terminal")
     ))
