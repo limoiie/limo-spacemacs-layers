@@ -44,6 +44,7 @@
   '(dap-mode
     lsp-mode
     lsp-ui
+    company
     pyvenv)
   )
 
@@ -83,7 +84,8 @@
     :after lsp-mode
     :custom
     (lsp-ui-doc-position 'at-point)
-    (lsp-ui-sideline-show-hover t)
+    (lsp-ui-sideline-mode nil)
+    (lsp-ui-sideline-show-hover nil)
     (lsp-ui-sideline-show-symbol t)
     (lsp-ui-sideline-delay 2.)
     :config
@@ -94,6 +96,14 @@
     ;; prefer `lsp-ui-peek' rather than `xref-find'
     (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
     (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)))
+
+(defun limo-config-coding/post-init-company ()
+  "You need to add ~auto-completion~ layer for enabling this."
+  (use-package company
+    :defer t
+    :config
+    (global-unset-key (kbd "M-\\"))
+    (define-key company-mode-map (kbd "M-\\") 'company-complete)))
 
 (defun limo-config-coding/post-init-pyvenv ()
   "You need to add ~python~ layer for enabling this."
