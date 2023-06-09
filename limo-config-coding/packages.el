@@ -45,8 +45,11 @@
     lsp-mode
     lsp-ui
     company
-    pyvenv)
-  )
+    (copilot :location (recipe
+                        :fetcher github
+                        :repo "zerolfx/copilot.el"
+                        :files ("*.el" "dist")))
+    pyvenv))
 
 
 (defun limo-config-coding/post-init-dap-mode ()
@@ -102,8 +105,24 @@
   (use-package company
     :defer t
     :config
-    (global-unset-key (kbd "M-\\"))
-    (define-key company-mode-map (kbd "M-\\") 'company-complete)))
+    (define-key company-mode-map (kbd "M-\\") 'company-complete)
+    ;; disable inline preview for copilot
+    (delq 'company-preview-if-just-one-frontend company-frontends)))
+
+(defun limo-config-coding/init-copilot ()
+  (use-package copilot
+    :defer t
+    :config
+    (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
+    (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
+    (define-key copilot-completion-map (kbd "C-e") 'copilot-accept-completion)
+    (define-key copilot-completion-map (kbd "C-<tab>") 'copilot-accept-completion-by-word)
+    (define-key copilot-completion-map (kbd "C-TAB") 'copilot-accept-completion-by-word)
+    (define-key copilot-completion-map (kbd "M-f") 'copilot-accept-completion-by-word)
+    (define-key copilot-completion-map (kbd "C-[") 'copilot-previous-completion)
+    (define-key copilot-completion-map (kbd "C-]") 'copilot-next-completion)
+    (spacemacs|diminish copilot-mode " ⓒ" " c")
+    :hook ((prog-mode . copilot-mode))))
 
 (defun limo-config-coding/post-init-pyvenv ()
   "You need to add ~python~ layer for enabling this."
