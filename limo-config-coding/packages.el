@@ -111,6 +111,7 @@
 
 (defun limo-config-coding/init-copilot ()
   (use-package copilot
+    :if limo-config-coding-copilot-enabled
     :defer t
     :config
     (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
